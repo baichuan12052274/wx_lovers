@@ -49,7 +49,7 @@ class HomeController extends Controller {
     async sendNotify() {
         try {
             const { service } = this
-            await service.wxNotify.snedNotify()
+            await service.wxNotify.sendNotify()
         } catch (error) {
             console.log(error)
         }

@@ -30,7 +30,7 @@ class WxNotify extends Service {
             case 'CLICK': // 点击
                 switch (EventKey) {
                     case 'HANDLE_SEND_TEMDPLATE':
-                        await this.snedNotify()
+                        await this.sendNotify()
                         reply = ''
                         break;
                     default:
@@ -60,7 +60,7 @@ class WxNotify extends Service {
         switch (MsgType) {
             case 'text': // 文本
                 if(Content === '发送模板') {
-                    await service.wxNotify.snedNotify()
+                    await service.wxNotify.sendNotify()
                     reply = ''
                 } else {
                     const aiText = await service.notifyUtils.sendAiText(Content)
@@ -110,17 +110,18 @@ class WxNotify extends Service {
         return createXml(obj);
     }
 
-    async snedNotify() {
+    async sendNotify() {
         try {
             const { ctx, app, service } = this
             const accessToken = await service.wx.getAccessToken()
-            const { mineBirth, gfBirth, loveDay } = app.config.userData
+            const { mineBirth, wfBirth, loveDay, babyBirth } = app.config.userData
             const { words, caihongpi } = app.config
             const curStand = Date.now()
-            const curWeek = service.notifyUtils.getWeek() // 星期几
+            const datetime = service.notifyUtils.getDatetime() // 当前时间2023-01-01 00:00:00 星期一
             const lovsDays = service.notifyUtils.getTogetherDays(curStand, loveDay) // 在一起天数
             const mineBirthDays= service.notifyUtils.birthDays(mineBirth) // 距离我的生日时间
-            const gfBirthDays = service.notifyUtils.birthDays(gfBirth)
+            const wfBirthDays = service.notifyUtils.birthDays(wfBirth)
+            const babyBirthDays = service.notifyUtils.birthDays(babyBirth)
             const weather = await service.notifyUtils.getWether() // 获取天气
             let chp = ''
             let lizhiWord = ''
@@ -142,8 +143,8 @@ class WxNotify extends Service {
             // 获取关注用户
             if(!users) return ctx.fail({fail: '获取关注用户失败，可能频繁操作出现了限制，请调用clearQuota接口清除'})
             const data = {
-                date: {
-                    value: curWeek,
+                datetime: {
+                    value: datetime,
                     color: randomHexColor()
                 },
                 city: {
@@ -170,8 +171,12 @@ class WxNotify extends Service {
                     value: mineBirthDays,
                     color: randomHexColor()
                 },
-                gfBirthDays: {
-                    value: gfBirthDays,
+                wfBirthDays: {
+                    value: wfBirthDays,
+                    color: randomHexColor()
+                },
+                babyBirthDays: {
+                    value: babyBirthDays,
                     color: randomHexColor()
                 },
                 lizhi: {

@@ -10,9 +10,9 @@ const apiUrl = {
 }
 const fs = require('fs')
 class NotifyUtils extends Service {
-    // 星期几
-    getWeek() {
-        return WEEKS[dayjs().day()]
+    // 日期时间，星期几
+    getDatetime() {
+        return dayjs().format('YYYY-MM-DD HH:mm:ss') + ' ' + WEEKS[dayjs().day()]
     }
 
     // 在一起的天数
@@ -81,7 +81,7 @@ class NotifyUtils extends Service {
             dataType: 'json'
         })
         if(res.status === 200 && res.data.code === 200) {
-            return res.data.newslist[0].content
+            return res.data.result.content
         } else {
             throw new Error('第三方天行彩虹屁接口请求失败')
         }
