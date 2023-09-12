@@ -4,7 +4,7 @@ const WEEKS  = ['星期日', '星期一', '星期二', '星期三', '星期四',
 const dayjs = require('dayjs')
 const apiUrl = {
     gdWether: 'https://restapi.amap.com/v3/weather/weatherInfo',
-    tianxing: 'http://api.tianapi.com',
+    tianxing: 'https://apis.tianapi.com',
     aitext: 'http://api.qingyunke.com/api.php',
     words: 'https://v1.hitokoto.cn'
 }
