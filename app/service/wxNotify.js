@@ -124,24 +124,35 @@ class WxNotify extends Service {
             const babyBirthDays = service.notifyUtils.birthDays(babyBirth)
             const weather = await service.notifyUtils.getWether() // 获取天气
             let chp = ''
+            let chp2 = ''
+            let chp3 = ''
             let lizhiWord = ''
+            let lizhiWord2 = ''
+            let lizhiWord3 = ''
             if(caihongpi.length) {
                 chp = caihongpi[Math.floor(Math.random() * caihongpi.length)]
             } else {
                 chp = await service.notifyUtils.getCaihongPi() // 获取彩虹屁
             }
-           
+            chp = chp.substring(0, 20)
+            chp2 = chp.substring(20, 40)
+            chp3 = chp.substring(40)
             if(words.length) {
                 lizhiWord = words[Math.floor(Math.random() * words.length)]
             } else {
                 lizhiWord = await service.notifyUtils.getLizhi() // 励志古言
             }
+            lizhiWord = lizhiWord.substring(0, 20)
+            lizhiWord2 = lizhiWord.substring(20, 40)
+            lizhiWord3 = lizhiWord.substring(40)
             if(!weather) {
                 throw new Error("推送失败，获取天气失败")
             }
             const users = await service.wx.getUsers()
             // 获取关注用户
             if(!users) return ctx.fail({fail: '获取关注用户失败，可能频繁操作出现了限制，请调用clearQuota接口清除'})
+            let lizhiColor = randomHexColor()
+            let chpColor = randomHexColor()
             const data = {
                 datetime: {
                     value: datetime,
@@ -180,12 +191,28 @@ class WxNotify extends Service {
                     color: randomHexColor()
                 },
                 lizhi: {
-                    value: lizhiWord || '暂无数据',
-                    color: randomHexColor()
+                    value: lizhiWord,
+                    color: lizhiColor
+                },
+                lizhi2: {
+                    value: lizhiWord2,
+                    color: lizhiColor
+                },
+                lizhi3: {
+                    value: lizhiWord3,
+                    color: lizhiColor
                 },
                 caihongpi: {
-                    value: chp ? chp : '',
-                    color: randomHexColor()
+                    value: chp,
+                    color: chpColor
+                },
+                caihongpi2: {
+                    value: chp2,
+                    color: chpColor
+                },
+                caihongpi3: {
+                    value: chp3,
+                    color: chpColor
                 }
             }
             for(let i = 0, j = users.length; i < j; i++) {
