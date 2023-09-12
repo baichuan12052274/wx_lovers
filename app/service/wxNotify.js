@@ -30,7 +30,7 @@ class WxNotify extends Service {
             case 'CLICK': // 点击
                 switch (EventKey) {
                     case 'HANDLE_SEND_TEMDPLATE':
-                        await this.sendNotify()
+                        await this.snedNotify()
                         reply = ''
                         break;
                     default:
@@ -60,7 +60,7 @@ class WxNotify extends Service {
         switch (MsgType) {
             case 'text': // 文本
                 if(Content === '发送模板') {
-                    await service.wxNotify.sendNotify()
+                    await service.wxNotify.snedNotify()
                     reply = ''
                 } else {
                     const aiText = await service.notifyUtils.sendAiText(Content)
@@ -110,7 +110,7 @@ class WxNotify extends Service {
         return createXml(obj);
     }
 
-    async sendNotify() {
+    async snedNotify() {
         try {
             const { ctx, app, service } = this
             const accessToken = await service.wx.getAccessToken()
