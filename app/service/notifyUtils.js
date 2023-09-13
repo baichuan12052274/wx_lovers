@@ -12,6 +12,9 @@ const fs = require('fs')
 class NotifyUtils extends Service {
     // 日期时间，星期几
     getDatetime() {
+        dayjs.extend(utc)
+        dayjs.extend(timezone)
+        dayjs.tz.setDefault("Asia/Shanghai")
         return dayjs().format('YYYY-MM-DD HH:mm:ss') + ' ' + WEEKS[dayjs().day()]
     }
 
