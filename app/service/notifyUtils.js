@@ -12,6 +12,8 @@ const fs = require('fs')
 class NotifyUtils extends Service {
     // 日期时间，星期几
     getDatetime() {
+        var utc = require('dayjs/plugin/utc')
+        var timezone = require('dayjs/plugin/timezone')
         dayjs.extend(utc)
         dayjs.extend(timezone)
         dayjs.tz.setDefault("Asia/Shanghai")
